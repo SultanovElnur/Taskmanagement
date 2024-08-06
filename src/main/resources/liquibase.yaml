@@ -1,5 +1,5 @@
 liquibase:
-  change-log: classpath:db/changelog/db.changelog-master.xml
+  change-log: classpath:/db-migrations/db.changelog-master.xml
   url: jdbc:postgresql://localhost:5432/task_management_db
   username: postgres
   password: postgres

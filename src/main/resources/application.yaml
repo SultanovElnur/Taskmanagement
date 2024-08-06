@@ -24,8 +24,7 @@ jwt:
   expiration: 3600 # in seconds
 
 liquibase:
-  change-log: classpath:db/changelog/db.changelog-master.yaml
-
+  change-log: classpath:/db-migrations/db.changelog-master.xml
 
 logging:
   level:
