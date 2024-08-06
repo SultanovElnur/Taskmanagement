@@ -1,0 +1,34 @@
+spring:
+  datasource:
+    url: jdbc:postgresql://localhost:5432/task_management_db
+    username: postgres
+    password: postgres
+    driver-class-name: org.postgresql.Driver
+  jpa:
+    hibernate:
+      ddl-auto: validate
+    properties:
+      hibernate:
+        format_sql: true
+    show-sql: true
+  security:
+    user:
+      name: user
+      password: password
+
+server:
+  port: 8080
+
+jwt:
+  secret: your_jwt_secret_key
+  expiration: 3600 # in seconds
+
+liquibase:
+  change-log: classpath:db/changelog/db.changelog-master.yaml
+
+
+logging:
+  level:
+    org.springframework: INFO
+    org.hibernate: INFO
+    com.sultanov: DEBUG
