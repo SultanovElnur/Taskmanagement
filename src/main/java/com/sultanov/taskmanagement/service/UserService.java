@@ -1,9 +1,13 @@
 package com.sultanov.taskmanagement.service;
 
 
+import com.sultanov.taskmanagement.dto.user.UserRegisterDto;
+import com.sultanov.taskmanagement.mapper.TaskMapper;
+import com.sultanov.taskmanagement.mapper.UserMapper;
 import com.sultanov.taskmanagement.model.entity.User;
 import com.sultanov.taskmanagement.repository.UserRepository;
 import lombok.AllArgsConstructor;
+import org.mapstruct.factory.Mappers;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -17,11 +21,12 @@ import java.util.Collections;
 public class UserService implements UserDetailsService {
 
     private final UserRepository userRepository;
-
     private final PasswordEncoder passwordEncoder;
+    private final UserMapper userMapper;
 
-    public User save(User user) {
-        user.setPassword(passwordEncoder.encode(user.getPassword()));
+    public User save(UserRegisterDto userRegisterDto) {
+        userRegisterDto.setPassword(passwordEncoder.encode(userRegisterDto.getPassword()));
+        User user = userMapper.mapToEntity(userRegisterDto);
         return userRepository.save(user);
     }
 

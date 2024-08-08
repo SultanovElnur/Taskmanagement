@@ -1,7 +1,6 @@
 package com.sultanov.taskmanagement.config;
 
 
-import com.sultanov.taskmanagement.security.JwtAuthenticationFilter;
 import lombok.AllArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

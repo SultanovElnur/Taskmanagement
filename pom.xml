@@ -39,6 +39,7 @@
             <artifactId>postgresql</artifactId>
             <scope>runtime</scope>
         </dependency>
+
 <!--        mapstruct-->
         <dependency>
             <groupId>org.mapstruct</groupId>
@@ -51,11 +52,13 @@
             <version>1.4.2.Final</version>
             <scope>provided</scope>
         </dependency>
+
 <!--        liquibase-->
         <dependency>
             <groupId>org.liquibase</groupId>
             <artifactId>liquibase-core</artifactId>
         </dependency>
+
         <!-- swagger -->
         <dependency>
             <groupId>org.springdoc</groupId>

@@ -14,7 +14,8 @@ CREATE TABLE "user" (
                         id BIGINT PRIMARY KEY NOT NULL,
                         email VARCHAR(255) NOT NULL,
                         password VARCHAR(255) NOT NULL,
-                        role VARCHAR(50)
+                        role VARCHAR(50),
+                        created_at TIMESTAMP
 );
 
 CREATE TABLE comment (
