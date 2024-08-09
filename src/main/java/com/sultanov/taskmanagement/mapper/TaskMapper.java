@@ -1,6 +1,6 @@
 package com.sultanov.taskmanagement.mapper;
 
-import com.sultanov.taskmanagement.dto.TaskDto;
+import com.sultanov.taskmanagement.dto.task.TaskDto;
 import com.sultanov.taskmanagement.model.entity.Task;
 import org.mapstruct.Mapper;
 import org.mapstruct.MappingTarget;

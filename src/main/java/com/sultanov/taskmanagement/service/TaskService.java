@@ -1,12 +1,11 @@
 package com.sultanov.taskmanagement.service;
 
-import com.sultanov.taskmanagement.dto.TaskDto;
+import com.sultanov.taskmanagement.dto.task.TaskDto;
 import com.sultanov.taskmanagement.mapper.TaskMapper;
 import com.sultanov.taskmanagement.model.entity.Task;
 import com.sultanov.taskmanagement.repository.TaskRepository;
 import com.sultanov.taskmanagement.repository.UserRepository;
 import lombok.AllArgsConstructor;
-import org.mapstruct.factory.Mappers;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -22,9 +21,9 @@ public class TaskService {
 
     public TaskDto createTask(TaskDto taskDTO) {
         Task task = taskMapper.mapToEntity(taskDTO);
-        task.setAuthor(userRepository.findById(taskDTO.getAuthor().getId()).orElse(null));
+        task.setAuthor(userRepository.findByEmail(taskDTO.getAuthor().getEmail()));
         if (taskDTO.getAssignee() != null) {
-            task.setAssignee(userRepository.findById(taskDTO.getAssignee().getId()).orElse(null));
+            task.setAssignee(userRepository.findByEmail(taskDTO.getAssignee().getEmail()));
         }
         return taskMapper.mapToDto(taskRepository.save(task));
     }

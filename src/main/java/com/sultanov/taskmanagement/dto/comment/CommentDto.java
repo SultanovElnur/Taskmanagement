@@ -1,4 +1,4 @@
-package com.sultanov.taskmanagement.dto;
+package com.sultanov.taskmanagement.dto.comment;
 
 import com.sultanov.taskmanagement.dto.user.UserDto;
 import lombok.AllArgsConstructor;
@@ -11,8 +11,6 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @AllArgsConstructor
 public class CommentDto {
-    private Long id;
     private String content;
-    private LocalDateTime createdAt;
     private UserDto user;
 }

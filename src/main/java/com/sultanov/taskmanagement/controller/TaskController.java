@@ -1,26 +1,27 @@
 package com.sultanov.taskmanagement.controller;
 
-import com.sultanov.taskmanagement.dto.TaskDto;
+import com.sultanov.taskmanagement.dto.task.TaskDto;
 import com.sultanov.taskmanagement.service.TaskService;
 import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @RestController
 @AllArgsConstructor
-@RequestMapping("/tasks")
+@RequestMapping("/task")
 public class TaskController {
 
     private final TaskService taskService;
 
-    @PostMapping
-    public TaskDto createTask(@RequestBody TaskDto taskDTO) {
+    @PostMapping("/create")
+    public TaskDto createTask(@Valid @RequestBody TaskDto taskDTO) {
         return taskService.createTask(taskDTO);
     }
 
-    @PutMapping("/{taskId}")
-    public TaskDto updateTask(@PathVariable Long taskId, @RequestBody TaskDto taskDTO) {
+    @PutMapping("/update/{taskId}")
+    public TaskDto updateTask(@PathVariable Long taskId,@Valid  @RequestBody TaskDto taskDTO) {
         return taskService.updateTask(taskId, taskDTO);
     }
 

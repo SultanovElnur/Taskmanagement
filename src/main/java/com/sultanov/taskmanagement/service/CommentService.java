@@ -1,6 +1,6 @@
 package com.sultanov.taskmanagement.service;
 
-import com.sultanov.taskmanagement.dto.CommentDto;
+import com.sultanov.taskmanagement.dto.comment.CommentDto;
 import com.sultanov.taskmanagement.mapper.CommentMapper;
 import com.sultanov.taskmanagement.model.entity.Comment;
 import com.sultanov.taskmanagement.model.entity.Task;
@@ -25,7 +25,7 @@ public class CommentService {
 
     public CommentDto addComment(Long taskId, CommentDto commentDTO) {
         Task task = taskRepository.findById(taskId).orElseThrow(() -> new RuntimeException("Task not found"));
-        User user = userRepository.findById(commentDTO.getUser().getId()).orElseThrow(() -> new RuntimeException("User not found"));
+        User user = userRepository.findByEmail(commentDTO.getUser().getEmail());
         Comment comment = commentMapper.mapToEntity(commentDTO);
         comment.setTask(task);
         comment.setUser(user);

@@ -1,6 +1,6 @@
 package com.sultanov.taskmanagement.mapper;
 
-import com.sultanov.taskmanagement.dto.CommentDto;
+import com.sultanov.taskmanagement.dto.comment.CommentDto;
 import com.sultanov.taskmanagement.model.entity.Comment;
 import org.mapstruct.Mapper;
 

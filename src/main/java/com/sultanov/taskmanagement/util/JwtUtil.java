@@ -1,5 +1,6 @@
 package com.sultanov.taskmanagement.util;
 
+import com.sultanov.taskmanagement.model.enums.Role;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
@@ -22,7 +23,7 @@ public class JwtUtil {
     private String SECRET_KEY;
 
     @Value("${jwt.expiration}")
-    private String EXPİRATİON;
+    private Long EXPİRATİON;
 
     public String extractUsername(String token) {
         return extractClaim(token, Claims::getSubject);
@@ -48,15 +49,23 @@ public class JwtUtil {
         return extractExpiration(token).before(new Date());
     }
 
-    public String generateToken(UserDetails userDetails) {
+    public String generateToken(UserDetails userDetails, Role role) {
         Map<String, Object> claims = new HashMap<>();
+        claims.put("username", userDetails.getUsername());
+        claims.put("password", userDetails.getPassword());
+        claims.put("role", role);
         return createToken(claims, userDetails.getUsername());
     }
 
     private String createToken(Map<String, Object> claims, String subject) {
-        return Jwts.builder().setClaims(claims).setSubject(subject).setIssuedAt(new Date(System.currentTimeMillis()))
+        return Jwts.builder()
+                .setClaims(claims)
+                .setSubject(subject)
+                .setIssuedAt(new Date(System.currentTimeMillis()))
+                .setIssuer("Task management")
                 .setExpiration(new Date(System.currentTimeMillis() + EXPİRATİON))
-                .signWith(SignatureAlgorithm.HS256, SECRET_KEY).compact();
+                .signWith(SignatureAlgorithm.HS256, SECRET_KEY)
+                .compact();
     }
 
     public Boolean validateToken(String token, UserDetails userDetails) {
@@ -72,5 +81,14 @@ public class JwtUtil {
                 .toList();
 
         return new UsernamePasswordAuthenticationToken(userDetails, null, authorities);
+    }
+
+    public String getRoleFromToken(String jwtToken) {
+        Claims claims = Jwts.parser()
+                .setSigningKey(SECRET_KEY)
+                .parseClaimsJws(jwtToken)
+                .getBody();
+
+        return claims.get("role", String.class);
     }
 }
