@@ -2,7 +2,8 @@ package com.sultanov.taskmanagement.service;
 
 import com.sultanov.taskmanagement.dto.auth.AuthResponseDto;
 import com.sultanov.taskmanagement.dto.error.ErrorResponseDto;
-import com.sultanov.taskmanagement.dto.user.UserCredDto;
+import com.sultanov.taskmanagement.dto.user.UserLoginDto;
+import com.sultanov.taskmanagement.dto.user.UserRegisterDto;
 import com.sultanov.taskmanagement.model.entity.User;
 import com.sultanov.taskmanagement.repository.UserRepository;
 import com.sultanov.taskmanagement.util.JwtUtil;
@@ -23,13 +24,13 @@ public class AuthService {
     private final JwtUtil jwtUtil;
     private final UserRepository userRepository;
 
-    public ResponseEntity<?> register(UserCredDto userCredDto) {
-        if (userRepository.existsByEmail(userCredDto.getEmail())) {
+    public ResponseEntity<?> register(UserRegisterDto userRegisterDto) {
+        if (userRepository.existsByEmail(userRegisterDto.getEmail())) {
             return ResponseEntity.status(HttpStatus.CONFLICT)
                     .body(new ErrorResponseDto("User has been already registered!"));
         }
 
-        User savedUser = userService.save(userCredDto);
+        User savedUser = userService.save(userRegisterDto);
         UserDetails userDetails = userService.loadUserByUsername(savedUser.getEmail());
         String token = jwtUtil.generateToken(userDetails, savedUser.getRole());
 
@@ -41,22 +42,22 @@ public class AuthService {
         return ResponseEntity.ok(response);
     }
 
-    public ResponseEntity<?> login(UserCredDto userCredDto) {
+    public ResponseEntity<?> login(UserLoginDto userLoginDto) {
         try {
             authenticationManager.authenticate(
                     new UsernamePasswordAuthenticationToken(
-                            userCredDto.getEmail(),
-                            userCredDto.getPassword()
+                            userLoginDto.getEmail(),
+                            userLoginDto.getPassword()
                     )
             );
 
-            User user = userRepository.findByEmail(userCredDto.getEmail());
+            User user = userRepository.findByEmail(userLoginDto.getEmail());
             if (user == null) {
                 return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
                         .body(new ErrorResponseDto("Incorrect credentials"));
             }
 
-            UserDetails userDetails = userService.loadUserByUsername(userCredDto.getEmail());
+            UserDetails userDetails = userService.loadUserByUsername(userLoginDto.getEmail());
             String token = jwtUtil.generateToken(userDetails, user.getRole());
 
             AuthResponseDto response = new AuthResponseDto(

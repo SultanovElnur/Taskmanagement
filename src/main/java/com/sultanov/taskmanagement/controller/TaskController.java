@@ -1,6 +1,7 @@
 package com.sultanov.taskmanagement.controller;
 
 import com.sultanov.taskmanagement.dto.task.TaskDto;
+import com.sultanov.taskmanagement.dto.task.TaskUpdateDto;
 import com.sultanov.taskmanagement.service.TaskService;
 import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.*;
@@ -21,8 +22,8 @@ public class TaskController {
     }
 
     @PutMapping("/update/{taskId}")
-    public TaskDto updateTask(@PathVariable Long taskId,@Valid  @RequestBody TaskDto taskDTO) {
-        return taskService.updateTask(taskId, taskDTO);
+    public TaskDto updateTask(@PathVariable Long taskId,@Valid  @RequestBody TaskUpdateDto taskUpdateDto) {
+        return taskService.updateTask(taskId, taskUpdateDto);
     }
 
     @DeleteMapping("/{taskId}")
@@ -33,6 +34,11 @@ public class TaskController {
     @GetMapping("/{taskId}")
     public TaskDto getTaskById(@PathVariable Long taskId) {
         return taskService.getTaskById(taskId);
+    }
+
+    @GetMapping("/all")
+    public List<TaskDto> getAllTask() {
+        return taskService.getAllTask();
     }
 
     @GetMapping("/author/{authorId}")

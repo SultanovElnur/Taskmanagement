@@ -1,4 +1,7 @@
 spring:
+  mvc:
+    dispatch-options-request:
+      true
   datasource:
     url: jdbc:postgresql://localhost:5432/task_management_db
     username: postgres

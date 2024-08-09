@@ -1,7 +1,7 @@
 package com.sultanov.taskmanagement.service;
 
 
-import com.sultanov.taskmanagement.dto.user.UserCredDto;
+import com.sultanov.taskmanagement.dto.user.UserRegisterDto;
 import com.sultanov.taskmanagement.exception.EmailAlreadyExistsException;
 import com.sultanov.taskmanagement.mapper.UserMapper;
 import com.sultanov.taskmanagement.model.entity.User;
@@ -27,13 +27,13 @@ public class UserService implements UserDetailsService {
     private final PasswordEncoder passwordEncoder;
     private final UserMapper userMapper;
 
-    public User save(UserCredDto userCredDto) {
-        if (userRepository.existsByEmail(userCredDto.getEmail())) {
+    public User save(UserRegisterDto userRegisterDto) {
+        if (userRepository.existsByEmail(userRegisterDto.getEmail())) {
             throw new EmailAlreadyExistsException("Email already in use");
         }
 
-        userCredDto.setPassword(passwordEncoder.encode(userCredDto.getPassword()));
-        User user = userMapper.mapToEntity(userCredDto);
+        userRegisterDto.setPassword(passwordEncoder.encode(userRegisterDto.getPassword()));
+        User user = userMapper.toEntity(userRegisterDto);
         user.setRole(Role.USER);
         return userRepository.save(user);
     }

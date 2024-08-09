@@ -1,10 +1,13 @@
 package com.sultanov.taskmanagement.service;
 
 import com.sultanov.taskmanagement.dto.task.TaskDto;
+import com.sultanov.taskmanagement.dto.task.TaskUpdateDto;
 import com.sultanov.taskmanagement.mapper.TaskMapper;
 import com.sultanov.taskmanagement.model.entity.Task;
+import com.sultanov.taskmanagement.model.entity.User;
 import com.sultanov.taskmanagement.repository.TaskRepository;
 import com.sultanov.taskmanagement.repository.UserRepository;
+import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -20,18 +23,21 @@ public class TaskService {
     private final TaskMapper taskMapper;
 
     public TaskDto createTask(TaskDto taskDTO) {
-        Task task = taskMapper.mapToEntity(taskDTO);
-        task.setAuthor(userRepository.findByEmail(taskDTO.getAuthor().getEmail()));
+        Task task = taskMapper.toEntity(taskDTO);
+        User author = userRepository.findByEmail(taskDTO.getAuthor().getEmail());
+        User assignee = userRepository.findByEmail(taskDTO.getAssignee().getEmail());
+        task.setAuthor(author);
         if (taskDTO.getAssignee() != null) {
-            task.setAssignee(userRepository.findByEmail(taskDTO.getAssignee().getEmail()));
+            task.setAssignee(assignee);
         }
-        return taskMapper.mapToDto(taskRepository.save(task));
+        return taskMapper.toDto(taskRepository.save(task));
     }
 
-    public TaskDto updateTask(Long taskId, TaskDto taskDTO) {
+    @Transactional
+    public TaskDto updateTask(Long taskId, TaskUpdateDto taskUpdateDto) {
         Task task = taskRepository.findById(taskId).orElseThrow(() -> new RuntimeException("Task not found"));
-        taskMapper.updateEntityFromDTO(taskDTO, task);
-        return taskMapper.mapToDto(taskRepository.save(task));
+        taskMapper.updateFromDTO(taskUpdateDto, task);
+        return taskMapper.toDto(taskRepository.save(task));
     }
 
     public void deleteTask(Long taskId) {
@@ -39,14 +45,18 @@ public class TaskService {
     }
 
     public TaskDto getTaskById(Long taskId) {
-        return taskMapper.mapToDto(taskRepository.findById(taskId).orElseThrow(() -> new RuntimeException("Task not found")));
+        return taskMapper.toDto(taskRepository.findById(taskId).orElseThrow(() -> new RuntimeException("Task not found")));
     }
 
     public List<TaskDto> getTasksByAuthorId(Long authorId) {
-        return taskRepository.findByAuthorId(authorId).stream().map(taskMapper::mapToDto).collect(Collectors.toList());
+        return taskRepository.findByAuthorId(authorId).stream().map(taskMapper::toDto).collect(Collectors.toList());
     }
 
     public List<TaskDto> getTasksByAssigneeId(Long assigneeId) {
-        return taskRepository.findByAssigneeId(assigneeId).stream().map(taskMapper::mapToDto).collect(Collectors.toList());
+        return taskRepository.findByAssigneeId(assigneeId).stream().map(taskMapper::toDto).collect(Collectors.toList());
+    }
+
+    public List<TaskDto> getAllTask() {
+        return taskMapper.allToDto(taskRepository.findAll());
     }
 }
