@@ -10,7 +10,7 @@ import java.util.List;
 
 @RestController
 @AllArgsConstructor
-@RequestMapping("/tasks/{taskId}/comments")
+@RequestMapping("/tasks/{taskId}/comment")
 public class CommentController {
 
     private final CommentService commentService;

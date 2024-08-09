@@ -1,0 +1,24 @@
+<ehcache xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:noNamespaceSchemaLocation="http://ehcache.org/ehcache.xsd"
+         name="TaskManagementCache"
+         updateCheck="false">
+
+    <diskStore path="java.io.tmpdir"/>
+
+    <defaultCache maxElementsInMemory="2000"
+                  eternal="true"
+                  overflowToDisk="false"
+                  timeToLiveSeconds="1200"/>
+
+    <cache name="TaskCache"
+           maxElementsInMemory="2000"
+           eternal="false"
+           overflowToDisk="false"
+           timeToLiveSeconds="86400"/>
+
+    <cache name="UserCache"
+           maxElementsInMemory="2000"
+           eternal="false"
+           overflowToDisk="false"
+           timeToLiveSeconds="86400"/>
+</ehcache>
