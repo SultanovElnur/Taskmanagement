@@ -38,14 +38,14 @@ public class TaskService {
     @CacheEvict(value = "TaskCache", allEntries = true)
     @CachePut(value = "TaskCache")
     public TaskDto createTask(TaskDto taskDTO) {
-        Task task = taskMapper.mapToEntity(taskDTO);
+        Task task = taskMapper.toEntity(taskDTO);
         User author = userRepository.findByEmail(taskDTO.getAuthor().getEmail());
         task.setAuthor(author);
         if (taskDTO.getAssignee() != null) {
             User assignee = userRepository.findByEmail(taskDTO.getAssignee().getEmail());
             task.setAssignee(assignee);
         }
-        return taskMapper.mapToDto(taskRepository.save(task));
+        return taskMapper.toDto(taskRepository.save(task));
     }
 
     @Transactional
@@ -58,8 +58,8 @@ public class TaskService {
             throw new RuntimeException("You are not authorized to update this task.");
         }
 
-        taskMapper.updateEntityFromDTO(taskUpdateDto, task);
-        return taskMapper.mapToDto(taskRepository.save(task));
+        taskMapper.updateFromDTO(taskUpdateDto, task);
+        return taskMapper.toDto(taskRepository.save(task));
     }
 
     @CacheEvict(value = "TaskCache")
@@ -69,17 +69,17 @@ public class TaskService {
 
     @Cacheable(value = "TaskCache")
     public TaskDto getTaskById(Long taskId) {
-        return taskMapper.mapToDto(taskRepository.findById(taskId).orElseThrow(() -> new RuntimeException("Task not found")));
+        return taskMapper.toDto(taskRepository.findById(taskId).orElseThrow(() -> new RuntimeException("Task not found")));
     }
 
     @Cacheable(value = "TaskCache")
     public List<TaskDto> getTasksByAuthorId(Long authorId) {
-        return taskRepository.findByAuthorId(authorId).stream().map(taskMapper::mapToDto).collect(Collectors.toList());
+        return taskRepository.findByAuthorId(authorId).stream().map(taskMapper::toDto).collect(Collectors.toList());
     }
 
     @Cacheable(value = "TaskCache")
     public List<TaskDto> getTasksByAssigneeId(Long assigneeId) {
-        return taskRepository.findByAssigneeId(assigneeId).stream().map(taskMapper::mapToDto).collect(Collectors.toList());
+        return taskRepository.findByAssigneeId(assigneeId).stream().map(taskMapper::toDto).collect(Collectors.toList());
     }
 
     @Cacheable(value = "TaskCache")
