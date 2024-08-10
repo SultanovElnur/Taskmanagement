@@ -6,6 +6,6 @@ import org.mapstruct.Mapper;
 
 @Mapper(componentModel = "spring")
 public abstract class UserMapper {
-    public abstract User toEntity(UserRegisterDto userRegisterDto);
+    public abstract User mapToEntity(UserRegisterDto userRegisterDto);
 
 }

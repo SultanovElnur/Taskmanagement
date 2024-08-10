@@ -33,7 +33,7 @@ public class UserService implements UserDetailsService {
         }
 
         userRegisterDto.setPassword(passwordEncoder.encode(userRegisterDto.getPassword()));
-        User user = userMapper.toEntity(userRegisterDto);
+        User user = userMapper.mapToEntity(userRegisterDto);
         user.setRole(Role.USER);
         return userRepository.save(user);
     }

@@ -26,13 +26,13 @@ public class CommentService {
     public CommentDto addComment(Long taskId, CommentDto commentDTO) {
         Task task = taskRepository.findById(taskId).orElseThrow(() -> new RuntimeException("Task not found"));
         User user = userRepository.findByEmail(commentDTO.getUser().getEmail());
-        Comment comment = commentMapper.toEntity(commentDTO);
+        Comment comment = commentMapper.mapToEntity(commentDTO);
         comment.setTask(task);
         comment.setUser(user);
-        return commentMapper.toDto(commentRepository.save(comment));
+        return commentMapper.mapToDto(commentRepository.save(comment));
     }
 
     public List<CommentDto> getCommentsByTaskId(Long taskId) {
-        return commentRepository.findByTaskId(taskId).stream().map(commentMapper::toDto).collect(Collectors.toList());
+        return commentRepository.findByTaskId(taskId).stream().map(commentMapper::mapToDto).collect(Collectors.toList());
     }
 }

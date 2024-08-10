@@ -13,12 +13,12 @@ import java.util.List;
 @Mapper(componentModel = "spring")
 public abstract class TaskMapper {
 
-    public abstract TaskDto toDto(Task task);
+    public abstract TaskDto mapToDto(Task task);
 
-    public abstract Task toEntity(TaskDto taskDTO);
+    public abstract Task mapToEntity(TaskDto taskDTO);
 
     @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
-    public abstract void updateFromDTO(TaskUpdateDto taskUpdateDto, @MappingTarget Task task);
+    public abstract void updateEntityFromDTO(TaskUpdateDto taskUpdateDto, @MappingTarget Task task);
 
-    public abstract List<TaskDto> allToDto(List<Task> all);
+    public abstract List<TaskDto> mapAllToDto(List<Task> all);
 }
